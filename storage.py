@@ -18,7 +18,7 @@ class Storage:
 
     def increment_clicks(self, code):
         count = self._clicks.get(code, 0)
-        count + 1  # BUG: result is thrown away; should be self._clicks[code] = count + 1
+        self._clicks[code] = count + 1
         return self._clicks[code]
 
     def get_clicks(self, code):

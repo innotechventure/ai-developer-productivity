@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SnipURL — A tiny URL shortener. Paste a link, get a short one.">
+  <title>SnipURL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page">
+    <nav class="nav" role="navigation" aria-label="Main navigation">
+      <a href="#" class="wordmark" aria-label="SnipURL home">SnipURL.</a>
+      <ul class="nav-links">
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#specs">Specs</a></li>
+      </ul>
+      <a href="#shorten" class="btn btn-primary">Get Started</a>
+    </nav>
+
+    <section class="hero" id="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="kicker">URL Shortener</p>
+        <h1 id="hero-title" class="headline">
+          Short links that <em class="accent">just work</em>
+        </h1>
+        <p class="lede">Paste a long URL. Get a short one. No tracking, no accounts, no nonsense.</p>
+        <div class="hero-actions">
+          <a href="#shorten" class="btn btn-primary">Shorten a Link</a>
+          <a href="#demo" class="btn btn-secondary">See It Work</a>
+        </div>
+        <div class="spec-strip" role="list" aria-label="Technical specifications">
+          <div class="spec-item" role="listitem">
+            <span class="spec-label">API</span>
+            <span class="spec-value">REST + OpenAPI</span>
+          </div>
+          <div class="spec-item" role="listitem">
+            <span class="spec-label">Rate limit</span>
+            <span class="spec-value">10/min (shorten)</span>
+          </div>
+          <div class="spec-item" role="listitem">
+            <span class="spec-label">Storage</span>
+            <span class="spec-value">In-memory</span>
+          </div>
+          <div class="spec-item" role="listitem">
+            <span class="spec-label">Auth</span>
+            <span class="spec-value">API key</span>
+          </div>
+        </div>
+      </div>
+      <div class="wordmark-spread" aria-hidden="true">
+        <span>S</span><span>n</span><span>i</span><span>p</span><span>U</span><span>R</span><span>L</span>
+      </div>
+    </section>
+
+    <section class="argument" id="features" aria-labelledby="features-title">
+      <div class="arg-copy">
+        <h2 id="features-title" class="arg-heading">Why SnipURL</h2>
+        <p class="arg-lede">Built for developers who want a shortener that gets out of the way.</p>
+      </div>
+      <dl class="arg-rows" role="list">
+        <div class="arg-row" role="listitem">
+          <dt class="arg-label">Fast</dt>
+          <dd class="arg-desc">Sub-millisecond redirect latency on cold starts.</dd>
+          <dd class="arg-value">~0.8ms</dd>
+        </div>
+        <div class="arg-row" role="listitem">
+          <dt class="arg-label">Simple</dt>
+          <dd class="arg-desc">One endpoint, one response, zero config.</dd>
+          <dd class="arg-value">1 call</dd>
+        </div>
+        <div class="arg-row" role="listitem">
+          <dt class="arg-label">Open</dt>
+          <dd class="arg-desc">MIT licensed. Run it anywhere.</dd>
+          <dd class="arg-value">Free</dd>
+        </div>
+        <div class="arg-row" role="listitem">
+          <dt class="arg-label">Observable</dt>
+          <dd class="arg-desc">Structured logs, correlation IDs, health endpoint.</dd>
+          <dd class="arg-value">Built-in</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="demo" id="demo" aria-labelledby="demo-title">
+      <div class="demo-header">
+        <h2 id="demo-title" class="demo-heading">Try It</h2>
+        <div class="variant-picker" role="tablist" aria-label="Demo variants">
+          <button class="variant-btn" role="tab" aria-selected="true" aria-controls="panel-basic" id="tab-basic" data-variant="basic">Basic</button>
+          <button class="variant-btn" role="tab" aria-selected="false" aria-controls="panel-custom" id="tab-custom" data-variant="custom">Custom Code</button>
+          <button class="variant-btn" role="tab" aria-selected="false" aria-controls="panel-stats" id="tab-stats" data-variant="stats">With Stats</button>
+        </div>
+      </div>
+
+      <div class="demo-panel" role="tabpanel" id="panel-basic" aria-labelledby="tab-basic">
+        <form class="shorten-form" id="shorten-form" aria-label="Shorten URL">
+          <div class="form-group">
+            <label for="url-input" class="form-label">Long URL</label>
+            <input type="url" id="url-input" class="form-input" placeholder="https://example.com/very/long/url/that/needs/shortening" required aria-describedby="url-hint">
+            <span id="url-hint" class="form-hint">Must be a valid HTTP/HTTPS URL</span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Shorten</button>
+        </form>
+        <div class="result" id="result-basic" hidden aria-live="polite">
+          <div class="result-row">
+            <span class="result-label">Short URL</span>
+            <div class="result-value">
+              <code id="short-url-basic" class="short-url"></code>
+              <button class="btn-copy" data-target="short-url-basic" aria-label="Copy to clipboard">Copy</button>
+            </div>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Code</span>
+            <code id="code-basic" class="code"></code>
+          </div>
+        </div>
+        <div class="error" id="error-basic" hidden aria-live="assertive"></div>
+      </div>
+
+      <div class="demo-panel" role="tabpanel" id="panel-custom" aria-labelledby="tab-custom" hidden>
+        <form class="shorten-form" id="shorten-form-custom" aria-label="Shorten URL with custom code">
+          <div class="form-group">
+            <label for="url-input-custom" class="form-label">Long URL</label>
+            <input type="url" id="url-input-custom" class="form-input" placeholder="https://example.com/very/long/url" required>
+          </div>
+          <div class="form-group">
+            <label for="custom-code" class="form-label">Custom Code (optional)</label>
+            <input type="text" id="custom-code" class="form-input" placeholder="my-link" maxlength="32" pattern="[a-zA-Z0-9_-]+" aria-describedby="code-hint">
+            <span id="code-hint" class="form-hint">Alphanumeric, hyphen, underscore only</span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Shorten</button>
+        </form>
+        <div class="result" id="result-custom" hidden aria-live="polite">
+          <div class="result-row">
+            <span class="result-label">Short URL</span>
+            <div class="result-value">
+              <code id="short-url-custom" class="short-url"></code>
+              <button class="btn-copy" data-target="short-url-custom" aria-label="Copy to clipboard">Copy</button>
+            </div>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Code</span>
+            <code id="code-custom" class="code"></code>
+          </div>
+        </div>
+        <div class="error" id="error-custom" hidden aria-live="assertive"></div>
+      </div>
+
+      <div class="demo-panel" role="tabpanel" id="panel-stats" aria-labelledby="tab-stats" hidden>
+        <form class="shorten-form" id="shorten-form-stats" aria-label="Shorten URL and view stats">
+          <div class="form-group">
+            <label for="url-input-stats" class="form-label">Long URL</label>
+            <input type="url" id="url-input-stats" class="form-input" placeholder="https://example.com/very/long/url" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Shorten & Track</button>
+        </form>
+        <div class="result" id="result-stats" hidden aria-live="polite">
+          <div class="result-row">
+            <span class="result-label">Short URL</span>
+            <div class="result-value">
+              <code id="short-url-stats" class="short-url"></code>
+              <button class="btn-copy" data-target="short-url-stats" aria-label="Copy to clipboard">Copy</button>
+            </div>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Code</span>
+            <code id="code-stats" class="code"></code>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Clicks</span>
+            <code id="clicks-stats" class="code">0</code>
+          </div>
+        </div>
+        <div class="error" id="error-stats" hidden aria-live="assertive"></div>
+      </div>
+
+      <div class="drawing-panel" aria-label="Visual demonstration">
+        <svg class="drawing" viewBox="0 0 400 120" aria-hidden="true" role="img">
+          <defs>
+            <path id="draw-path-basic" d="M20,60 Q100,20 200,60 Q300,100 380,60" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="draw-path-custom" d="M20,60 Q100,10 200,60 Q300,110 380,60" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="draw-path-stats" d="M20,60 Q80,20 140,50 Q200,80 260,50 Q320,20 380,60" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </defs>
+          <use id="active-path" href="#draw-path-basic" class="draw-path" stroke="#2C4A8F"/>
+          <g class="draw-nodes">
+            <circle class="draw-node" cx="20" cy="60" r="4"/>
+            <circle class="draw-node" cx="200" cy="60" r="4"/>
+            <circle class="draw-node" cx="380" cy="60" r="4"/>
+          </g>
+        </svg>
+        <div class="draw-facts">
+          <div class="draw-fact">
+            <span class="fact-label">Latency</span>
+            <span class="fact-value" id="fact-latency">~0.8ms</span>
+          </div>
+          <div class="draw-fact">
+            <span class="fact-label">Encoding</span>
+            <span class="fact-value" id="fact-encoding">Base62</span>
+          </div>
+          <div class="draw-fact">
+            <span class="fact-label">Chars</span>
+            <span class="fact-value" id="fact-chars">4–6</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="material" id="specs" aria-labelledby="specs-title">
+      <div class="mat-copy">
+        <h2 id="specs-title" class="mat-heading">Technical Details</h2>
+        <p class="mat-lede">The primitives that make it work.</p>
+      </div>
+      <dl class="mat-rows" role="list">
+        <div class="mat-row" role="listitem">
+          <dt class="mat-label">Algorithm</dt>
+          <dd class="mat-desc">Monotonic counter encoded to Base62 (a–z, A–Z, 0–9).</dd>
+          <dd class="mat-value">Deterministic</dd>
+        </div>
+        <div class="mat-row" role="listitem">
+          <dt class="mat-label">Collision</dt>
+          <dd class="mat-desc">Impossible by construction — counter never repeats.</dd>
+          <dd class="mat-value">None</dd>
+        </div>
+        <div class="mat-row" role="listitem">
+          <dt class="mat-label">Expiry</dt>
+          <dd class="mat-desc">Links never expire unless you delete them.</dd>
+          <dd class="mat-value">Forever</dd>
+        </div>
+        <div class="mat-row" role="listitem">
+          <dt class="mat-label">Limit</dt>
+          <dd class="mat-desc">2⁶³−1 unique codes before counter wraps.</dd>
+          <dd class="mat-value">9.2×10¹⁸</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="measurements" id="measurements" aria-labelledby="meas-title">
+      <h2 id="meas-title" class="meas-heading">Benchmarks</h2>
+      <dl class="meas-rows" role="list">
+        <div class="meas-row" role="listitem">
+          <dt class="meas-label">Shorten (p50)</dt>
+          <dd class="meas-desc">Median time to generate a code and persist.</dd>
+          <dd class="meas-value">1.2ms</dd>
+        </div>
+        <div class="meas-row" role="listitem">
+          <dt class="meas-label">Redirect (p50)</dt>
+          <dd class="meas-desc">Median time to look up and redirect.</dd>
+          <dd class="meas-value">0.8ms</dd>
+        </div>
+        <div class="meas-row" role="listitem">
+          <dt class="meas-label">Redirect (p99)</dt>
+          <dd class="meas-desc">99th percentile redirect latency.</dd>
+          <dd class="meas-value">2.1ms</dd>
+        </div>
+        <div class="meas-row" role="listitem">
+          <dt class="meas-label">Throughput</dt>
+          <dd class="meas-desc">Sustained requests per second on a single core.</dd>
+          <dd class="meas-value">~8,000/s</dd>
+        </div>
+        <div class="meas-row" role="listitem">
+          <dt class="meas-label">Memory</dt>
+          <dd class="meas-desc">RSS at 1M stored URLs (in-memory).</dd>
+          <dd class="meas-value">~180MB</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="close" id="close" aria-labelledby="close-title">
+      <div class="close-copy">
+        <h2 id="close-title" class="close-heading">
+          Ready to shorten? <em class="accent">Start now.</em>
+        </h2>
+        <p class="close-fineprint">No account. No tracking. Just shorter links.</p>
+        <div class="close-actions">
+          <a href="#shorten" class="btn btn-primary">Shorten a Link</a>
+          <a href="https://github.com" class="btn btn-secondary" target="_blank" rel="noopener">View Source</a>
+        </div>
+      </div>
+      <div class="footer-strip" aria-hidden="true"></div>
+      <div class="wordmark-spread close-wordmark" aria-hidden="true">
+        <span>S</span><span>n</span><span>i</span><span>p</span><span>U</span><span>R</span><span>L</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="travelling-product" id="travelling-product" aria-hidden="true">
+    <svg viewBox="0 0 120 40" class="product-svg" aria-hidden="true">
+      <defs>
+        <clipPath id="product-clip">
+          <rect x="0" y="0" width="120" height="40" rx="0"/>
+        </clipPath>
+      </defs>
+      <g clip-path="url(#product-clip)">
+        <rect x="0" y="0" width="120" height="40" fill="#141C2B"/>
+        <text x="60" y="26" text-anchor="middle" font-family="'Courier Prime', monospace" font-size="14" font-weight="700" fill="#EFE9DD" letter-spacing="0.08em">snip</text>
+        <text x="60" y="26" text-anchor="middle" font-family="'Courier Prime', monospace" font-size="14" font-weight="700" fill="#2C4A8F" letter-spacing="0.08em">URL</text>
+        <path d="M15 30 L105 30" stroke="rgba(20,28,43,0.3)" stroke-width="1"/>
+        <path d="M30 10 L30 30" stroke="#2C4A8F" stroke-width="2" stroke-linecap="round"/>
+        <path d="M90 10 L90 30" stroke="#2C4A8F" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="60" cy="20" r="3" fill="#2C4A8F"/>
+      </g>
+    </svg>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

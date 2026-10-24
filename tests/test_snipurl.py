@@ -20,15 +20,13 @@ def test_shorten_creates_code():
     assert store.get_url(code) == "https://example.com"
 
 
-@pytest.mark.xfail(reason="planted bug: increment_clicks discards count+1", strict=True)
 def test_click_counter_increments():
     store = Storage()
     store.save("abc", "https://example.com")
     store.increment_clicks("abc")
     store.increment_clicks("abc")
-    assert store.get_clicks("abc") == 2  # currently returns 0
+    assert store.get_clicks("abc") == 2
 
 
-@pytest.mark.xfail(reason="planted bug: encode_base62(0) returns empty string", strict=True)
 def test_encode_base62_handles_zero():
-    assert encode_base62(0) != ""  # currently returns ""
+    assert encode_base62(0) != ""
