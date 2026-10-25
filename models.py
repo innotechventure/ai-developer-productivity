@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 class ShortenRequest(BaseModel):
     url: str
+    code: str | None = None
 
 
 class ShortenResponse(BaseModel):

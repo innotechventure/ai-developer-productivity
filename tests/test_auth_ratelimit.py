@@ -20,39 +20,39 @@ def clean_slate(monkeypatch):
 
 
 def test_shorten_requires_api_key():
-    resp = client.post("/shorten", json={"url": "https://example.com"})
+    resp = client.post("/api/shorten", json={"url": "https://example.com"})
     assert resp.status_code == 401
 
 
 def test_shorten_rejects_invalid_api_key():
     resp = client.post(
-        "/shorten", json={"url": "https://example.com"}, headers={"X-API-Key": "wrong"}
+        "/api/shorten", json={"url": "https://example.com"}, headers={"X-API-Key": "wrong"}
     )
     assert resp.status_code == 401
 
 
 def test_shorten_accepts_valid_api_key():
-    resp = client.post("/shorten", json={"url": "https://example.com"}, headers=AUTH)
+    resp = client.post("/api/shorten", json={"url": "https://example.com"}, headers=AUTH)
     assert resp.status_code == 200
     assert resp.json()["code"]
 
 
 def test_stats_requires_api_key():
-    assert client.get("/stats/abc").status_code == 401
+    assert client.get("/api/stats/abc").status_code == 401
 
 
 def test_api_keys_come_from_env(monkeypatch):
     monkeypatch.setenv("SNIPURL_API_KEYS", "alpha, beta")
     body = {"url": "https://example.com"}
-    assert client.post("/shorten", json=body, headers={"X-API-Key": "beta"}).status_code == 200
-    assert client.post("/shorten", json=body, headers=AUTH).status_code == 401
+    assert client.post("/api/shorten", json=body, headers={"X-API-Key": "beta"}).status_code == 200
+    assert client.post("/api/shorten", json=body, headers=AUTH).status_code == 401
 
 
 def test_redirect_stays_public():
     code = client.post(
-        "/shorten", json={"url": "https://example.com"}, headers=AUTH
+        "/api/shorten", json={"url": "https://example.com"}, headers=AUTH
     ).json()["code"]
-    resp = client.get(f"/{code}", follow_redirects=False)
+    resp = client.get(f"/r/{code}", follow_redirects=False)
     assert resp.status_code == 307
     assert resp.headers["location"] == "https://example.com"
 
@@ -60,8 +60,8 @@ def test_redirect_stays_public():
 def test_shorten_rate_limit_returns_429():
     body = {"url": "https://example.com"}
     for _ in range(main.shorten_limiter.limit):
-        assert client.post("/shorten", json=body, headers=AUTH).status_code == 200
-    resp = client.post("/shorten", json=body, headers=AUTH)
+        assert client.post("/api/shorten", json=body, headers=AUTH).status_code == 200
+    resp = client.post("/api/shorten", json=body, headers=AUTH)
     assert resp.status_code == 429
     assert int(resp.headers["Retry-After"]) >= 1
 
