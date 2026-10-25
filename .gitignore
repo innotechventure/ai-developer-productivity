@@ -8,3 +8,4 @@ tests/
 plans/
 CHANGELOG.md
 .pytest_cache/
+.agents/freellm_explorer.toml
